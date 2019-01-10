@@ -16,39 +16,35 @@ with open("AllFollowers.txt", "w") as followerfile:
         followerfile.write(string)
         followCount[string] = 0
 
-#writing likers to single txt file
-array2 = []
-with open("LikesPage.txt", "r") as likesearch:
-    with open("AllLikes.txt", "w") as likesfile:
-        for line in likesearch:
-            searchphrase = 'profile'
-            if searchphrase in line:
-                array2.append(line)
-        for line in array2:
-            remove = "'s profile picture"
-            likesfile.write(line.replace(remove, ""))
-
 #counting likes across posts
 with open("AllLikes.txt", "r") as likesfile:
     for like in likesfile:
         if like in followCount:
             followCount[like] = followCount[like] + 1
-        else if like not in followCount:
+        elif like not in followCount:
             followCount[like] = 1
 
 #ordering and printing followers + likes
 alpha = OrderedDict(sorted(followCount.items(), key=lambda x:x[1]))
 
-with open("Final Stats.txt", "w") as final:
-    for k,v in alpha.items():
-        print(k, end="")
-        print(" : ", v)
-        final.write("\n" + k + " : ")
-        final.write(str(v))
+count = len(alpha)
+"""for k,v in alpha.items():
+    print(k,v)"""
 
+with open("Final Stats.txt", "w") as final:
+    am = 0
+    while count>0:
+        final.write("\n \n LIKES:" + str(am) + "\n")
+        for k,v in alpha.items():
+            if v == am:
+                final.write(k)
+                count = count - 1
+        am = am + 1
+            
 
 """
 Next steps
 1) Implementing web-scraping to automate data gathering
 2) Commenter data: Most comments on posts etc
 3) Like data: Average likes on days of the week etc
+"""
